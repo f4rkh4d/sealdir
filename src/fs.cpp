@@ -35,7 +35,12 @@ Vault* vault() {
 }
 
 // split "/a/b/c" into ("/a/b", "c"). root -> ("", "").
-std::pair<std::string, std::string> split_parent(const char* path) {
+// kept for the rename + mkdir paths, which currently go through
+// map_path directly; this helper is on the v0.2 todo for structured
+// parent-directory handling so i am leaving it here and silencing the
+// unused warning rather than dead-coding it.
+[[maybe_unused]] std::pair<std::string, std::string> split_parent(
+    const char* path) {
   std::string p = path;
   while (p.size() > 1 && p.back() == '/') p.pop_back();
   if (p.empty() || p == "/") return {"", ""};
