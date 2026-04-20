@@ -1,0 +1,22 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsodium-dev libfuse3-dev pkg-config cmake ninja-build
+      - name: configure
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+      - name: build
+        run: cmake --build build
+      - name: test
+        run: ctest --test-dir build --output-on-failure
