@@ -5,6 +5,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-Wall -Wextra -Wpedantic)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SODIUM REQUIRED libsodium)
-add_library(sealdir_crypto STATIC src/base64url.cpp src/crypto.cpp)
-target_include_directories(sealdir_crypto PUBLIC include ${SODIUM_INCLUDE_DIRS})
-target_link_libraries(sealdir_crypto PUBLIC ${SODIUM_LIBRARIES})
+add_library(sealdir_lib STATIC
+  src/base64url.cpp
+  src/crypto.cpp
+  src/header.cpp
+  src/vault.cpp
+  src/password.cpp
+)
+target_include_directories(sealdir_lib PUBLIC include ${SODIUM_INCLUDE_DIRS})
+target_link_libraries(sealdir_lib PUBLIC ${SODIUM_LIBRARIES})
