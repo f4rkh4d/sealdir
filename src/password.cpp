@@ -22,8 +22,8 @@ int open_tty() {
 
 std::string read_password(std::string_view prompt) {
   int fd = open_tty();
-  // write prompt
-  ::write(fd, prompt.data(), prompt.size());
+  // prompt. ignore short writes to the tty, nothing we can do about them.
+  (void)!::write(fd, prompt.data(), prompt.size());
 
   termios oldt{}, newt{};
   if (tcgetattr(fd, &oldt) != 0) {
@@ -52,7 +52,7 @@ std::string read_password(std::string_view prompt) {
   }
 
   tcsetattr(fd, TCSAFLUSH, &oldt);
-  ::write(fd, "\n", 1);
+  (void)!::write(fd, "\n", 1);
   ::close(fd);
   return out;
 }
